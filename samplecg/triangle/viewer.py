@@ -77,7 +77,7 @@ def main():
     # model = Triangle("./gouraud.vert", "./gouraud.frag").setup()
     # model = Triangle("./phong.vert", "./phong.frag").setup()
 
-    model = TriangleIDX("./gouraud.vert", "./gouraud.frag").setup()
+    model = TriangleMesh("./gouraud.vert", "./gouraud.frag").setup()
     # model = TriangleEx("./phong.vert", "./phong.frag").setup()
 
     viewer.add(model)
