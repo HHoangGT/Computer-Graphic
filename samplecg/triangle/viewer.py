@@ -1,12 +1,13 @@
-import OpenGL.GL as GL              # standard Python OpenGL wrapper
-import glfw                         # lean windows system wrapper for OpenGL
-import numpy as np                  # all matrix manipulations & OpenGL args
+import OpenGL.GL as GL  # standard Python OpenGL wrapper
+import glfw  # lean windows system wrapper for OpenGL
+import numpy as np  # all matrix manipulations & OpenGL args
 from triangle import *
 
 
 # ------------  Viewer class & windows management ------------------------------
 class Viewer:
     """ GLFW viewer windows, with classic initialization & graphics loop """
+
     def __init__(self, width=640, height=480):
 
         # version hints: create GL windows with >= OpenGL 3.3 and core profile
@@ -70,14 +71,14 @@ def main():
     """ create windows, add shaders & scene objects, then run rendering loop """
     viewer = Viewer()
 
-
     # patch = cylinder.TexturedCylinder("./patch/textured/phong_texture.vert", "./patch/textured/phong_texture.frag").setup()
 
     # Triangles
-    #model = Triangle("./gouraud.vert", "./gouraud.frag").setup()
-    #model = Triangle("./phong.vert", "./phong.frag").setup()
+    # model = Triangle("./gouraud.vert", "./gouraud.frag").setup()
+    # model = Triangle("./phong.vert", "./phong.frag").setup()
 
-    model = TriangleEx("./phong.vert", "./phong.frag").setup()
+    model = TriangleIDX("./gouraud.vert", "./gouraud.frag").setup()
+    # model = TriangleEx("./phong.vert", "./phong.frag").setup()
 
     viewer.add(model)
 
@@ -86,6 +87,6 @@ def main():
 
 
 if __name__ == '__main__':
-    glfw.init()                # initialize windows system glfw
-    main()                     # main function keeps variables locally scoped
-    glfw.terminate()           # destroy all glfw windows and GL contexts
+    glfw.init()  # initialize windows system glfw
+    main()  # main function keeps variables locally scoped
+    glfw.terminate()  # destroy all glfw windows and GL contexts
