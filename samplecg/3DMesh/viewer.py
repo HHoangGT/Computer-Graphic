@@ -1,15 +1,18 @@
-import OpenGL.GL as GL              # standard Python OpenGL wrapper
-import glfw                         # lean windows system wrapper for OpenGL
-import numpy as np                  # all matrix manipulations & OpenGL args
-from itertools import cycle   # cyclic iterator to easily toggle polygon rendering modes
-# from glfwdemo.modeling.libs.transform import Trackball
-from tetra import *
+import OpenGL.GL as GL  # standard Python OpenGL wrapper
+import glfw  # lean windows system wrapper for OpenGL
+import numpy as np  # all matrix manipulations & OpenGL args
+from itertools import cycle  # cyclic iterator to easily toggle polygon rendering modes
+from libs.transform import Trackball
+from cube import *
+
+
 # ------------  Viewer class & windows management ------------------------------
 class Viewer:
     """ GLFW viewer windows, with classic initialization & graphics loop """
+
     def __init__(self, width=800, height=800):
         self.fill_modes = cycle([GL.GL_LINE, GL.GL_POINT, GL.GL_FILL])
-        
+
         # version hints: create GL windows with >= OpenGL 3.3 and core profile
         glfw.window_hint(glfw.CONTEXT_VERSION_MAJOR, 3)
         glfw.window_hint(glfw.CONTEXT_VERSION_MINOR, 3)
@@ -39,12 +42,11 @@ class Viewer:
 
         # initialize GL by setting viewport and default render characteristics
         GL.glClearColor(0.5, 0.5, 0.5, 0.1)
-        #GL.glEnable(GL.GL_CULL_FACE)   # enable backface culling (Exercise 1)
-        #GL.glFrontFace(GL.GL_CCW) # GL_CCW: default
+        # GL.glEnable(GL.GL_CULL_FACE)   # enable backface culling (Exercise 1)
+        # GL.glFrontFace(GL.GL_CCW) # GL_CCW: default
 
         GL.glEnable(GL.GL_DEPTH_TEST)  # enable depth test (Exercise 1)
-        GL.glDepthFunc(GL.GL_LESS)   # GL_LESS: default
-
+        GL.glDepthFunc(GL.GL_LESS)  # GL_LESS: default
 
         # initially empty list of object to draw
         self.drawables = []
@@ -56,12 +58,12 @@ class Viewer:
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
             win_size = glfw.get_window_size(self.win)
-            model = self.trackball.view_matrix()
+            view = self.trackball.view_matrix()
             projection = self.trackball.projection_matrix(win_size)
 
             # draw our scene objects
             for drawable in self.drawables:
-                drawable.draw(projection, None, model)
+                drawable.draw(projection, view, None)
 
             # flush render commands, and swap draw buffers
             glfw.swap_buffers(self.win)
@@ -100,15 +102,13 @@ class Viewer:
         self.trackball.zoom(deltay, glfw.get_window_size(win)[1])
 
 
-
 # -------------- main program and scene setup --------------------------------
 def main():
-
     """ create windows, add shaders & scene objects, then run rendering loop """
     viewer = Viewer()
     # place instances of our basic objects
 
-    model = Tetrahedron("./gouraud.vert", "./gouraud.frag").setup()
+    model = Cube("./gouraud.vert", "./gouraud.frag").setup()
     viewer.add(model)
 
     # start rendering loop
@@ -116,6 +116,6 @@ def main():
 
 
 if __name__ == '__main__':
-    glfw.init()                # initialize windows system glfw
-    main()                     # main function keeps variables locally scoped
-    glfw.terminate()           # destroy all glfw windows and GL contexts
+    glfw.init()  # initialize windows system glfw
+    main()  # main function keeps variables locally scoped
+    glfw.terminate()  # destroy all glfw windows and GL contexts
